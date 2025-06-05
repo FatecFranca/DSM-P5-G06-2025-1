@@ -1,23 +1,58 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { api } from "../../tools/api";
+import React from "react";
 
 export default function HomeScreen() {
+  const [loading, setLoading] = React.useState(true);
+  const [artists, setArtists] = React.useState([]);
+
+  const getArtists = async () => {
+    setLoading(true);
+    await api
+      .get("/artists", {
+        params: {
+          limit: 50,
+          offset: 0,
+        },
+      })
+      .then((response) => {
+        setArtists(response.data.rows);
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  React.useEffect(() => {
+    getArtists();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Bem-vindo!</Text>
-        <Text style={styles.subtitle}>
-          Confira a seguir as recomendações que temos para você baseado no seu
-          perfil
-        </Text>
       </View>
-      <View style={styles.content}>
-        <View style={styles.card}></View>
-        <View style={styles.card}></View>
-        <View style={styles.card}></View>
-        <View style={styles.card}></View>
-        <View style={styles.card}></View>
-        <View style={styles.card}></View>
-      </View>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{
+          gap: 10,
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        {artists.map((artist, index) => (
+          <View key={index} style={styles.card}>
+            <Text style={styles.subtitle}>#{index + 1}</Text>
+            <Text style={{ color: "#333533", fontWeight: "bold" }}>
+              {artist.name}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -25,7 +60,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2b2d42",
+    backgroundColor: "#333533",
     padding: 10,
   },
   header: {
@@ -42,22 +77,25 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: "#8d99ae",
     fontWeight: "600",
+    position: "absolute",
+    top: 10,
+    left: 10,
+    color: "#f5cb5c",
+    textShadowColor: "#000",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+    zIndex: 1,
+    opacity: 0.7,
   },
   content: {
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
   },
   card: {
     backgroundColor: "#8d99ae",
-    width: 170,
-    height: 170,
-    borderRadius: 10,
+    width: "48%",
+    paddingBlock: 20,
+    borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
   },
