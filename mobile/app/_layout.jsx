@@ -1,12 +1,12 @@
-import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import Entypo from "@expo/vector-icons/Entypo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useFonts } from "expo-font";
-import "react-native-reanimated";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { TouchableOpacity } from "react-native";
+import "react-native-reanimated";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -31,12 +31,17 @@ export default function RootLayout() {
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
     }
-  }
+  };
 
   return (
     <ThemeProvider value={DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="recommendations"
           options={{
@@ -66,11 +71,7 @@ export default function RootLayout() {
                     logOut();
                   }}
                 >
-                  <Entypo
-                    name="log-out"
-                    size={24}
-                    color="black"
-                  />
+                  <Entypo name="log-out" size={24} color="black" />
                 </TouchableOpacity>
               );
             },

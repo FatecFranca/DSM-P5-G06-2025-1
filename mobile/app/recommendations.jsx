@@ -1,29 +1,30 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "expo-router";
+import React from "react";
 import {
   Image,
-  Text,
-  View,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ToastManager, { Toast } from "toastify-react-native";
-import { useFocusEffect } from "expo-router";
-import Loader from "../tools/loader";
+import { Toast } from "toastify-react-native";
 import { api } from "../tools/api";
-import React from "react";
+import Loader from "../tools/loader";
 
 export default function RecommendationsScreen() {
   const [loading, setLoading] = React.useState(false);
   const [recommendations, setRecommendations] = React.useState([]);
   const [user, setUser] = React.useState(null);
+  const [limit, setLimit] = React.useState(10);
 
   const getRecommendations = async () => {
     setLoading(true);
     await api
       .get(`/users/${user?.id}/recommendations`, {
         params: {
-          n: 22,
+          n: limit,
         },
       })
       .then((response) => {
@@ -65,7 +66,7 @@ export default function RecommendationsScreen() {
         return;
       }
       getRecommendations();
-    }, [user?.id])
+    }, [user?.id, limit])
   );
 
   return (
@@ -105,6 +106,22 @@ export default function RecommendationsScreen() {
               <Text>{item?.artistDetails?.name}</Text>
             </View>
           ))}
+          <TouchableOpacity
+            onPress={() => {
+              setLimit((prev) => prev + 10);
+            }}
+            style={{
+              backgroundColor: "#accbde",
+              padding: 10,
+              borderRadius: 5,
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "bold" }}>
+              Carregar mais
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
       )}
     </View>

@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useFocusEffect } from "expo-router";
-import Loader from "../../tools/loader";
-import { api } from "../../tools/api";
-import { Image } from "react-native";
 import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { api } from "../../tools/api";
+import Loader from "../../tools/loader";
 
 export default function HomeScreen() {
   const [loading, setLoading] = React.useState(true);
@@ -36,56 +35,59 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={require("../../assets/images/homeicon.png")}
-          style={{
-            width: 100,
-            height: 100,
-            alignSelf: "center",
-          }}
-          resizeMode="contain"
-        />
-        <View style={{ maxWidth: "70%" }}>
-          <Text style={styles.title}>Bem-vindo!</Text>
-          <Text style={styles.subtitle}>
-            Confira nossa seleção de artistas
-            <Text style={{ fontWeight: "800" }}> mais populares</Text>
-          </Text>
-        </View>
-      </View>
-      <View
+      <Image
+        source={require("../../assets/images/home.png")}
         style={{
           width: "100%",
-          height: 5,
-          backgroundColor: "#e9edc9",
-          marginBottom: 10,
-          borderRadius: 100,
+          height: 390,
+          position: "absolute",
+          top: -2,
+          left: 0,
+          right: 0,
         }}
+        resizeMode="contain"
       />
       {loading ? (
         <Loader />
       ) : (
-        <ScrollView
-          style={styles.content}
-          contentContainerStyle={{
-            gap: 10,
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-          showsVerticalScrollIndicator={false}
-        >
-          {artists.map((artist, index) => (
-            <View key={index} style={styles.card}>
-              <Text style={[styles.bodySubtitle]}>#{index + 1}</Text>
-              <Text style={{ color: "#accbde", fontWeight: "bold" }}>
-                {artist.name}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
+        <>
+          <View style={styles.header}>
+            <Text style={styles.subtitle}>
+              Confira nossa seleção de artistas
+              <Text style={{ fontWeight: "800" }}> mais populares</Text>
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "95%",
+              height: 5,
+              backgroundColor: "#e9edc9",
+              marginBottom: 10,
+              borderRadius: 100,
+              alignSelf: "center",
+            }}
+          />
+          <ScrollView
+            style={styles.content}
+            contentContainerStyle={{
+              gap: 10,
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+            showsVerticalScrollIndicator={false}
+          >
+            {artists.map((artist, index) => (
+              <View key={index} style={styles.card}>
+                <Text style={[styles.bodySubtitle]}>#{index + 1}</Text>
+                <Text style={{ color: "#accbde", fontWeight: "bold" }}>
+                  {artist.name}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
+        </>
       )}
     </View>
   );
@@ -96,15 +98,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
+    justifyContent: "flex-end",
   },
   header: {
-    justifyContent: "center",
     marginBottom: 10,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    width: "100%",
+    width: "80%",
+    alignSelf: "center",
   },
   title: {
     fontSize: 24,
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#accbde",
     zIndex: 1,
-    maxWidth: "70%",
+    maxWidth: "100%",
   },
   bodySubtitle: {
     fontSize: 16,
@@ -130,6 +131,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    maxHeight: "70%",
+    padding: 10,
   },
   card: {
     borderWidth: 3,

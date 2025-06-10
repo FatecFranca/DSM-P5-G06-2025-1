@@ -1,11 +1,10 @@
+import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { HapticTab } from "@/components/HapticTab";
-import { Platform } from "react-native";
 import { Tabs } from "expo-router";
 import React from "react";
+import { Platform } from "react-native";
 
 export default function TabLayout() {
   return (
@@ -49,6 +48,7 @@ export default function TabLayout() {
               <FontAwesome size={26} name="user-o" color={color} />
             ),
           title: "Perfil",
+          headerShown: false,
         }}
       />
     </Tabs>
